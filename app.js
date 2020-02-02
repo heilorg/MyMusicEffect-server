@@ -1,16 +1,23 @@
 const express = require("express");
+const session = require("express-session");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
-const User = require("./models/user");
-const Song = require("./models/song");
+const api = require("./routes");
 
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: true })); // 객체 안 객체 허용
 app.use(bodyParser.json());
+app.use(
+    session({
+        secret: "!@#heilorg!@#",
+        resave: false,
+        saveUninitialized: true
+    })
+);
+app.use("/api", api);
 
 const port = process.env.PORT || 3001;
-const router = require("./routes")(app, User, Song);
 
 const server = app.listen(port, () => {
     console.log("Express server has started on port " + port);
