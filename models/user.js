@@ -14,7 +14,7 @@ userSchema.methods.generateHash = password => {
     // 해싱
     return bcryptjs.hashSync(password, 8);
 };
-userSchema.methods.validateHash = password => {
+userSchema.methods.validateHash = function(password) {
     // 해싱 검사
     return bcryptjs.compareSync(password, this.password);
 };

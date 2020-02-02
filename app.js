@@ -16,6 +16,10 @@ app.use(
     })
 );
 app.use("/api", api);
+app.use((err, req, res, next) => {
+    console.log(err);
+    res.status(500).send("something break"); // 라우터에서 에러를 던지면 실행
+});
 
 const port = process.env.PORT || 3001;
 

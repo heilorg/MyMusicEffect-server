@@ -8,5 +8,9 @@ router.use("/song", song);
 router.get("/test", (req, res) => {
     res.json({ data: "hello express" });
 });
+router.get("/getInfo", (req, res) => {
+    if (typeof req.session.user === "undefined")
+        return res.status(401).json({ error: 1 });
+});
 
 module.exports = router;
