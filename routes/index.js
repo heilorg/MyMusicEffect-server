@@ -11,6 +11,7 @@ router.get("/test", (req, res) => {
 router.get("/getInfo", (req, res) => {
     if (typeof req.session.user === "undefined")
         return res.status(401).json({ error: 1 });
+    return res.json({ success: true });
 });
 
 module.exports = router;

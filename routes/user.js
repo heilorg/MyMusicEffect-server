@@ -3,22 +3,10 @@ const router = express.Router();
 const User = require("../models/user");
 
 // GET
-router.get("/test", (req, res) => {
-    res.json({ data: "asd" });
-});
 router.get("/all", (req, res) => {
     User.find((err, users) => {
         if (err) throw err;
         res.json(users);
-    });
-});
-
-// id -> _id(몽고디비 시스템적 아이디) , user_id -> 사용자가 지정한 아이디
-router.get("/get/:id", (req, res) => {
-    User.findOne({ _id: req.params.id }, (err, user) => {
-        if (err) throw err;
-        if (!user) return res.status(404).json({ error: "user not found" });
-        res.json(user);
     });
 });
 
@@ -87,28 +75,6 @@ router.post("/logout", (req, res) => {
         if (err) throw err;
     });
     return res.json({ success: true });
-});
-
-//PUT
-router.put("/modify/:id", (req, res) => {
-    User.upadte({ _id: req.parmas.id }, { $set: req.body }, (err, output) => {
-        if (err) return res.status(500).json({ error: "database failure" });
-        if (!output.n) return res.status(404).send({ error: "user not found" });
-
-        console.log(output);
-        res.json({ message: "user upload" });
-    });
-});
-
-//DELETE
-router.delete("/delete/:id", (req, res) => {
-    User.remove({ _id: req.params.id }, (err, output) => {
-        if (err) return res.status(500).json({ error: "database failure" });
-        if (!output.n) return res.status(404).json({ error: "user not found" });
-
-        res.json({ message: "user deleted" });
-        res.status(204).end();
-    });
 });
 
 module.exports = router;
