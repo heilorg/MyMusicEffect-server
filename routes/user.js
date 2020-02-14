@@ -25,12 +25,11 @@ router.post("/create", (req, res) => {
         return res.status(400).json({ error: "bad passwrod", code: 2 });
 
     let nameRegex = /^[a-zㄱ-ㅎㅏ-ㅣ가-힣]+$/;
-    if (!nameRegex.test(user.id))
+    if (!nameRegex.test(user.name))
         return res.status(400).json({ error: "bad name", code: 3 });
 
     User.findOne({ id: user.id }, (err, findUser) => {
-        if (err)
-            return res.status(500).json({ error: "database failure", code: 0 });
+        if (err) throw err;
         if (findUser)
             return res.status(409).json({ error: "need other id", code: 4 });
 
@@ -75,6 +74,13 @@ router.post("/logout", (req, res) => {
         if (err) throw err;
     });
     return res.json({ success: true });
+});
+
+router.get("/clear", (req, res) => {
+    User.deleteMany({}, err => {
+        if (err) throw err;
+        res.send("success");
+    });
 });
 
 module.exports = router;

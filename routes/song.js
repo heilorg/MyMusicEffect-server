@@ -7,7 +7,7 @@ router.post("/add", (req, res) => {
     if (req.session.user === "undefined")
         return res.status(403).json({ error: "not logged in", code: 1 });
 
-    let { title, data } = res.body;
+    let { title, data } = req.body;
     if (typeof title !== "string")
         return res.status(400).json({ error: "empty title", code: 2 });
     if (title === "")
@@ -32,12 +32,10 @@ router.get("/get", (req, res) => {
     if (req.session.user === "undefined")
         return res.status(403).json({ error: "not logged in", code: 1 });
 
-    Song.find({ owner: res.session.user._id })
-        .limit(10)
-        .exec((err, songs) => {
-            if (err) throw err;
-            res.json(songs);
-        });
+    Song.find({ owner: req.session.user._id }).exec((err, songs) => {
+        if (err) throw err;
+        res.json(songs);
+    });
 });
 
 // 수정
@@ -99,6 +97,13 @@ router.delete("/delete/:song_id", (req, res) => {
             if (err) throw err;
             res.json({ success: true });
         });
+    });
+});
+
+router.get("/clear", (req, res) => {
+    Song.deleteMany({}, err => {
+        if (err) throw err;
+        res.send("success");
     });
 });
 
