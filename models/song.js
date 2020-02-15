@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const songSchema = new Schema({
-    data: String,
+    path: String,
     title: String,
     owner: String
 });
