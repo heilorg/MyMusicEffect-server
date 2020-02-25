@@ -1,13 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const Song = require("../models/song");
+const mongoose = require("mongoose");
 const multer = require("multer");
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
         cb(null, "uploads/");
     },
     filename: function(req, file, cb) {
-        console.log(file);
         cb(null, req.session.user._id + file.originalname);
     }
 });
@@ -30,7 +30,7 @@ router.post("/add", upload.single("data"), (req, res) => {
 
     let song = new Song({
         title,
-        path: "/uploads/" + req.session.user._id + req.file.originalname,
+        path: req.session.user._id + req.file.originalname,
         owner: req.session.user._id
     });
     song.save(err => {

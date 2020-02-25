@@ -15,6 +15,7 @@ app.use(
         saveUninitialized: true
     })
 );
+app.use(express.static("uploads"));
 app.use("/api", api);
 app.use((err, req, res, next) => {
     console.log(err);
